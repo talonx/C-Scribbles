@@ -17,6 +17,14 @@ int main(int argc, char *argv) {
 	
 	printf("%s%d\n", "Length is ", length(head));
 
+        struct lnode *last = append(head, 4);
+        printf("After appending\n");
+        traverse(head);
+       
+        pushp(&head, 5);
+        printf("After appending using push p2p\n");
+        traverse(head);
+
 }
 
 void traverse(struct lnode *head) {
