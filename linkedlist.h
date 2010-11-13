@@ -107,3 +107,15 @@ void insertnth(struct lnode **headref, int index, int data) {
     newnode->next = next;
 }
 
+/**
+ * Takes 2 lists, moves the first node from the second list and 
+ * pushes it to the front of the first.
+ */
+void movenode(struct lnode **a, struct lnode **b) {
+    struct lnode *second = (*b)->next;
+    (*b)->next = *a;
+    *a = *b;
+    
+    *b = second;
+}
+
