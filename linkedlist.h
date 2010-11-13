@@ -51,3 +51,38 @@ struct lnode *append(struct lnode *head, int data) {
     p->next = lp;
     return lp;
 }
+
+/**
+ * Deletes a list - deallocates all memory and sets the head pointer to null
+ */
+void deletelist(struct lnode **head) {
+    struct lnode *current = *head;
+    struct lnode *next;
+    while(current) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    *head = NULL;
+}
+
+/**
+ * Move through the list and print out each element
+ */
+void traverse(struct lnode *head) {
+    struct lnode *lp;
+    for(lp = head;lp != NULL;lp = lp->next) {
+        printf("%d\n", lp->data);
+    }
+}
+
+/**
+ * Deletes the head element and returns it's value
+ */
+int pop(struct lnode **head) {
+    int ret = (*head)->data;
+    free(*head);
+    *head = NULL;
+    return ret;
+}
+
