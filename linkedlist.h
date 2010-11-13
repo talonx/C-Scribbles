@@ -86,3 +86,24 @@ int pop(struct lnode **head) {
     return ret;
 }
 
+struct lnode *allocate(int data) {
+    struct lnode *node = malloc(sizeof(struct lnode));
+    node->data = data;
+    return node;
+}
+
+/**
+ * Inserts the given data at the specified index
+ */
+void insertnth(struct lnode **headref, int index, int data) {
+    int n;
+    struct lnode *current = *headref;
+    for(n = 0;n < index - 1;n++) {
+       current = current->next;
+    }
+    struct lnode *newnode = allocate(data);
+    struct lnode *next = current->next;
+    current->next = newnode;
+    newnode->next = next;
+}
+
