@@ -119,3 +119,37 @@ void movenode(struct lnode **a, struct lnode **b) {
     *b = second;
 }
 
+/**
+ * Reverses the given list by rearranging all the .next pointers
+ */
+void reverse(struct lnode **headref) {
+    struct lnode *prev;
+    struct lnode *current = *headref;
+    struct lnode *next;
+    while(current) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *headref = prev;//holds the last value of current, which is now null
+}
+
+/**
+ * Builds a list with sequential data out of the data specified - how many nodes,
+ * where the data starts and how much to increment by.
+ */
+struct lnode *buildlist(int numItems, int start, int inc) {
+    struct lnode *head = allocate(start);
+    int n;
+    struct lnode *cur;
+    struct lnode *prev = head;
+    for(n = start + inc;n < numItems;) {
+        cur = allocate(n);
+        prev->next = cur;
+        prev = cur;
+        n += inc;
+    }
+    return head;
+}
+
