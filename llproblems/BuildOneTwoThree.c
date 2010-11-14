@@ -22,11 +22,3 @@ int main(int argc, char *argv) {
 
 }
 
-void traverse(struct lnode *head) {
-    struct lnode *lp;
-	
-	for(lp = head;lp != NULL;lp = lp->next) {
-	    printf("%d\n", lp->data);
-	}
-
-}

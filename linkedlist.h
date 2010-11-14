@@ -153,3 +153,10 @@ struct lnode *buildlist(int numItems, int start, int inc) {
     return head;
 }
 
+/**
+ * Recursively reverses the given list.
+ */
+void recreverse(struct lnode **headref) {
+    //Incomplete    
+}
+
