@@ -2,7 +2,7 @@
 #include "../linkedlist.h"
 #include "problems.h"
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     struct lnode *head = BuildOneTwoThree();
     struct lnode *next = head->next;
     int i = pop(&head);

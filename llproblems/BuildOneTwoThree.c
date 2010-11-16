@@ -5,7 +5,7 @@
 
 void traverse(struct lnode *head);
 
-int main(int argc, char *argv) {
+int main(int argc, char *argv[]) {
         struct lnode *head = BuildOneTwoThree();
 	
 	traverse(head);

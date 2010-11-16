@@ -4,7 +4,7 @@
 
 int nth(struct lnode *head, int index);
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     struct lnode *head = BuildOneTwoThree();
     int i = nth(head, 2);
     printf("%d\n", i);

@@ -23,7 +23,7 @@ struct lnode {
     char *value;
 };
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     install("hrishikesh", "barua");
     install("hrishikesh1", "barua1");
 //    install("2hrishikesh", "barua2");

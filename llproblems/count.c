@@ -4,7 +4,7 @@
 
 int count(struct lnode *head, int searchFor);
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     struct lnode *head = BuildOneTwoThree();
     int i = count(head, 2);
     printf("%d\n", i);
