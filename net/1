@@ -7,12 +7,9 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <unistd.h>
-#include <signal.h>
 
 #define MAXLINE 1000
 #define MAXQLEN 10
-
-typedef void sigfunc(int);
 
 void handleerr(int d);
 void printerror(int err);
@@ -21,7 +18,7 @@ ssize_t readn(int fd, void *vptr, size_t n);
 ssize_t writen(int fd, const void *vptr, size_t n);
 static ssize_t my_read(int fd, char *ptr);
 static ssize_t readline(int fd, void *vptr, size_t maxlen);
-void register_signal_handler(int signum, sigfunc * func);
+void register_signal_handler(int signum, (void)(* func)(int));
 
 /**
  * This function's code is from Richard Stevens' UNP 3rd ed Vol 1
@@ -182,12 +179,10 @@ static ssize_t readline(int fd, void *vptr, size_t maxlen)
 /**
  * Signal handler
  */
-void register_signal_handler(int signum, sigfunc * handler) {
-	struct sigaction act;
+void register_signal_handler(int signum, (void)(* handler)(int)) {
+	struct sigaction * act;
 	act.sa_handler = handler;
-	sigemptyset(&act.sa_mask);
-	act.sa_flags = 0;
-	int ret = sigaction(signum, &act, NULL);
+	int ret = sigaction(signum, struct sigaction * act, NULL);
 	if(ret != 0) {
 		printf("Failed to set signal handler for %d. Error code: %d\n", signum, ret);
 		exit(1);
