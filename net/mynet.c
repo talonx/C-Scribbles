@@ -11,14 +11,14 @@ ssize_t writen(int fd, const void *vptr, size_t n) {
 	nleft = n;
 	while (nleft > 0) {
 		if ( (nwritten = write(fd, ptr, nleft)) <= 0) {
-				if (nwritten < 0 && errno == EINTR)
-					nwritten = 0;
-				else
-					return (-1);
+			if (nwritten < 0 && errno == EINTR)
+				nwritten = 0;
+			else
+				return (-1);
 		}
 		nleft -= nwritten;
 		ptr += nwritten;
-		}
+	}
 	return (n);
 }
 
@@ -123,7 +123,7 @@ void startserver(void (*func)(int), int port) {
 
 
 /**
- * These 3 functions' code are from Richard Stevens' UNP 3rd ed Vol 1
+ * These 2 functions' code are from Richard Stevens' UNP 3rd ed Vol 1
  */
 static int read_cnt;
 static char read_buf[MAXLINE];
@@ -144,8 +144,7 @@ static ssize_t my_read(int fd, char *ptr) {
 	return (1);
 }
 
-static ssize_t readline(int fd, void *vptr, size_t maxlen)
-{
+ssize_t readline(int fd, void *vptr, size_t maxlen) {
 	ssize_t n, rc;
 	char c, *ptr;
 	ptr = vptr;
@@ -166,7 +165,7 @@ static ssize_t readline(int fd, void *vptr, size_t maxlen)
 
 
 /**
- * Signal handler
+ * Register a Signal handler function for the specified signal
  */
 void register_signal_handler(int signum, sigfunc * handler) {
 	struct sigaction act;
