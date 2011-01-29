@@ -10,10 +10,10 @@ void echo(int connfd) {
 			writen(connfd, buff, n);
 		}
 		if(n < 0) {
-			if(errno = EINTR) {
+			if(errno == EINTR) {
 				goto again;
 			} else {
-				err_sys("read error");
+				handleerr_s("read error");
 			}
 		}
 }
