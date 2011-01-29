@@ -16,7 +16,7 @@ typedef void sigfunc(int);
 
 void handleerr(int d);
 void printerror(int err);
-void startserver(void (*func)(int d));
+void startserver(void (*func)(int d), int port);
 ssize_t readn(int fd, void *vptr, size_t n);
 ssize_t writen(int fd, const void *vptr, size_t n);
 static ssize_t my_read(int fd, char *ptr);
