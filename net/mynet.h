@@ -95,7 +95,7 @@ void printerror(int err) {
  * Starts a server process taking a pointer to a function. This function is invoked
  * in a forked process when a client connects.
  */
-void startserver(void (*func)(int)) {
+void startserver(void (*func)(int), int port) {
 	pid_t pid;
 	int listenfd;
 	int connfd;

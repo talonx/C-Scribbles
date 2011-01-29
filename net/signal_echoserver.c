@@ -26,6 +26,6 @@ void echo(int connfd) {
 
 int main(int argc, char **argv) {
 	register_signal_handler(SIGALRM, handler);
-    startserver(echo);
+    startserver(echo, 1025);
 }
 

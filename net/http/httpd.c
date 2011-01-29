@@ -1,8 +1,8 @@
-#include "mynet.h"
+#include "../mynet.h"
 
-void echo(int connfd);
+void serve(int connfd);
 
-void echo(int connfd) {
+void int serve(int connfd) {
 	ssize_t n;
 	char buff[MAXLINE];
 	again:
@@ -20,6 +20,6 @@ void echo(int connfd) {
 
 
 int main(int argc, char **argv) {
-    startserver(echo, 1025);
+    startserver(serve);
 }
 
