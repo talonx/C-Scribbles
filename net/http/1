@@ -95,7 +95,7 @@ void writefile(char *uri, int connfd) {
 	if(fp == NULL) { //TODO handle specific errors
 		printf("Error in opening file %s\n", fullpath);
 	}
-/*	int ret;//Fix this code. Buffer.t
+/*	int ret;//Fix this code. Buffer.
 	const char buff[MAXLINE];
 	ret = fread(buff, sizeof(char), MAXLINE, fp);
 	writen(connfd, buff, ret);//Fix.
