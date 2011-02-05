@@ -36,7 +36,7 @@ void serve(int connfd) {
 		//writen(connfd, buff, n);
 		//printf("Read %d\n", n);
 	}
-    printf("Will serve the file \n");	
+
 	writefile(uri, connfd);
 	//TODO handle n < 0
 	free(uri);
@@ -47,7 +47,7 @@ void serve(int connfd) {
 char *read_uri(char *buff, char *uri) {
     int m = indexof(buff, "GET");
 	if(m == -1) {
-		send_error("Only GET is supported", 501);//Check
+//		send_error("Only GET is supported", 501);//TODO fix
 		return;
 	}
 	int n, i = 0;
@@ -56,7 +56,7 @@ char *read_uri(char *buff, char *uri) {
 		//printf("uri char: %s\n", uri);
 	}
 	uri[i++] = '\0';
-	printf("Returning uri %s\n", uri);
+	//printf("Returning uri %s\n", uri);
 	return uri;
 }
 
@@ -76,7 +76,17 @@ int indexof(char *s1, char *s2) {
 char *read_host(char *buff, char *host) {
 }
 
-void send_error(char *mes, int code) {
+void send_error(int connfd, char *mes, int code) {//TODO mes is ignored
+	switch (code) {
+		case 404:
+			writen(connfd, FOUR_O_FOUR_STARTLINE, LENGTH_404_STARTLINE);
+			writen(connfd, "\r\n", 2);
+			break;
+		default:
+			writen(connfd, "HTTP/1.0 500", 12);
+			writen(connfd, "\r\n", 2);
+			break;
+	}
 }
 
 void writefile(char *uri, int connfd) {
@@ -87,25 +97,27 @@ void writefile(char *uri, int connfd) {
 	FILE *fp = fopen(fullpath, "r");
 	if(fp == NULL) { //TODO handle specific errors
 		printf("Error in opening file %s\n", fullpath);
-	}
+		send_error(connfd, "File not found or could not be opened\n", 404);
+	} else {
+		writeresponseheader("HTTP/1.0 200 OK\r\n", connfd);//Not a header, the start line, but we're reusing the method
+		writen(connfd, "\r\n", 2);
 
-	writeresponseheader("HTTP/1.0 200 OK\r\n", connfd);//Not a header, the start line, but we're reusing the method
-	writen(connfd, "\r\n", 2);
-
-	int tot = 0;
-	const char buff[BUFSIZE];
-	int ret = fread(buff, sizeof(char), BUFSIZE, fp);
-	tot += ret;
-	while(ret > 0) {
-		writen(connfd, buff, ret);
-		ret = fread(buff, sizeof(char), BUFSIZE, fp);
+		int tot = 0;
+		const char buff[BUFSIZE];
+		int ret = fread(buff, sizeof(char), BUFSIZE, fp);
 		tot += ret;
-//		printf("ret : %d\n", ret);
-//		printf(buff);
+		while(ret > 0) {
+			writen(connfd, buff, ret);
+			ret = fread(buff, sizeof(char), BUFSIZE, fp);
+			tot += ret;
+	//		printf("ret : %d\n", ret);
+	//		printf(buff);
+		}
+
+		writen(connfd, "\r\n", 2);
+		printf("Wrote %d bytes\n", tot);
 	}
 
-	writen(connfd, "\r\n", 2);
-	printf("Wrote %d bytes\n", tot);
 	fclose(fp);
 }
 
