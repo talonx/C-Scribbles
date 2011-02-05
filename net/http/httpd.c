@@ -2,6 +2,9 @@
 
 #define URI 0
 #define HOST 1
+#define BUFSIZE 128
+
+char *rootdir;
 
 char *read_uri(char *buff, char *uri);
 char *read_host(char *buff, char *uri);
@@ -11,6 +14,7 @@ int indexof(char *str, char *inner);
 void writefile(char *uri, int connfd);
 
 void serve(int connfd) {
+	printf("Rootdir is%s\n", rootdir);
 	ssize_t n;
 	char buff[MAXLINE];
 	int state = -1;
@@ -88,20 +92,27 @@ void send_error(char *mes, int code) {
 
 void writefile(char *uri, int connfd) {
 	char fullpath[MAXLINE];
-	strcat(fullpath, "/home/talonx");
+	strcat(fullpath, rootdir);
 	strcat(fullpath,  uri);
 	printf("Fullpath %s\n", fullpath);
 	FILE *fp = fopen(fullpath, "r");
 	if(fp == NULL) { //TODO handle specific errors
 		printf("Error in opening file %s\n", fullpath);
 	}
-/*	int ret;//Fix this code. Buffer.t
-	const char buff[MAXLINE];
-	ret = fread(buff, sizeof(char), MAXLINE, fp);
-	writen(connfd, buff, ret);//Fix.
-	printf("ret : %d\n", ret);
-	printf(buff);
-*/
+
+	int tot = 0;
+	const char buff[BUFSIZE];
+	int ret = fread(buff, sizeof(char), BUFSIZE, fp);
+	tot += ret;
+	while(ret > 0) {
+		writen(connfd, buff, ret);
+		ret = fread(buff, sizeof(char), BUFSIZE, fp);
+		tot += ret;
+//		printf("ret : %d\n", ret);
+//		printf(buff);
+	}
+	
+	printf("Wrote %d bytes\n", tot);
 	fclose(fp);
 }
 
@@ -113,6 +124,14 @@ void writefile(char *uri, int connfd) {
 }*/
 
 int main(int argc, char **argv) {
-    startserver(serve, 8181);
+    if (argc != 3) {
+		printf("Usage: ./httpd <port> <root_dir>\n");
+		exit(1);
+	}
+	int port = atoi(argv[1]);
+	rootdir = argv[2];
+	printf("Port is %d\n", port);
+	printf("root dir %s\n", rootdir);
+    startserver(serve, port);
 }
 
