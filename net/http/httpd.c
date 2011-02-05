@@ -1,17 +1,6 @@
-#include "../mynet.h"
-
-#define URI 0
-#define HOST 1
-#define BUFSIZE 128
+#include "httpd.h"
 
 char *rootdir;
-
-char *read_uri(char *buff, char *uri);
-char *read_host(char *buff, char *uri);
-void serve(int connfd);
-void send_error(char *mes, int code);
-int indexof(char *str, char *inner);
-void writefile(char *uri, int connfd);
 
 void serve(int connfd) {
 	printf("Rootdir is%s\n", rootdir);
@@ -100,6 +89,9 @@ void writefile(char *uri, int connfd) {
 		printf("Error in opening file %s\n", fullpath);
 	}
 
+	writeresponseheader("HTTP/1.0 200 OK\r\n", connfd);//Not a header, the start line, but we're reusing the method
+	writen(connfd, "\r\n", 2);
+
 	int tot = 0;
 	const char buff[BUFSIZE];
 	int ret = fread(buff, sizeof(char), BUFSIZE, fp);
@@ -111,7 +103,8 @@ void writefile(char *uri, int connfd) {
 //		printf("ret : %d\n", ret);
 //		printf(buff);
 	}
-	
+
+	writen(connfd, "\r\n", 2);
 	printf("Wrote %d bytes\n", tot);
 	fclose(fp);
 }
@@ -122,6 +115,11 @@ void writefile(char *uri, int connfd) {
     }
     while (*s1++ = *s2++);
 }*/
+
+void writeresponseheader(char *header, int connfd) {
+	int size = strlen(header);
+	writen(connfd, header, size);
+}
 
 int main(int argc, char **argv) {
     if (argc != 3) {
