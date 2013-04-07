@@ -36,11 +36,7 @@ int main(int argc, char **argv) {
     printf("Source Address: %02x:%02x:%02x:%02x:%02x:%02x\n",buffer[c+6], buffer[c+7], buffer[c+8], buffer[c+9], buffer[c+10], buffer[c+11]);
 
     int frame_type = buffer[c+12];
-    if(frame_type == ETHERTYPE_IP) {
-        printf("Frame type is IP\n");
-    }
     printf("Frame type: %02x:%02x\n",buffer[c+12], buffer[c+13]);
-    //freeaddrinfo(&servinfo);
 
     close(fd);
 
