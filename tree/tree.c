@@ -62,20 +62,28 @@ void printPostOrder(struct node *root) {
     printval(root);
 }
 
-void put_val(struct node *n, int *vals) {
-    *vals = n->val;
-    vals++;
-    put_val(n->right, vals);
-    put_val(n->left, vals);
+int put_val(struct node *n, int *vals, int counter) {
+    vals[counter++] = n->val;
+    if(n->left != NULL) {
+        counter = put_val(n->left, vals, counter);
+    }
+    if(n->right != NULL) {
+        counter = put_val(n->right, vals, counter);
+    }
+    return counter;
 }
 
 /**
  * Returns an array of ints in DFS order for the specified tree.
  */
-int *get_dfs(struct node *root) {
+struct traverse_result *get_dfs(struct node *root) {
     int *vals = malloc(100 * sizeof(int));
-    put_val(root, vals);
-    return vals;
+    int counter = 0;
+    int size = put_val(root, vals, counter);
+    struct traverse_result *res = malloc(sizeof (struct traverse_result));
+    res->vals = vals;
+    res->length = size;
+    return res;
 }
 
 /**
@@ -176,7 +184,6 @@ struct node *create_tree() {
     for (i = 1;i < 11;i++) {
         num = vals[i];
         p = q = tree;
-        printf("Num is %d\n", num);
         while(q != NULL) {
             p = q;
             if(num < info(p)) {
@@ -244,19 +251,23 @@ int get_level(struct node *root, struct node *n) {
     return 0;
 }
 
+/*
 int main(int argc, char **argv) {
     struct node *t = create_tree();
-    int *vals = get_dfs(t);
-    printf("Go dfs\n");
+    struct traverse_result *res = get_dfs(t);
+    int *vals = res->vals;
+    printf("Got dfs\n");
     int i = 0;
-    for(i = 0;i < 10;i++) {
+    for(i = 0;i < res->length;i++) {
         printf("%d\n", vals[i]);
     }
  //   printf("%d\n", lookup(t, 14));
    // printf("%d\n", lookup(t, 5));
   //  printf("%d\n", lookup(t, 18));
 //    printf("%d\n", lookup(t, 100));
-    //printdfs(t);
+   //printdfs(t);
  //dup_detect_and_traverse();
     return 0;
 }
+
+*/

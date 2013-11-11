@@ -14,6 +14,12 @@ struct node {
     int val;
 };
 
+struct traverse_result {
+    int *vals;
+    int length;
+};
+
+struct traverse_result *get_dfs(struct node *tree);
 struct node *maketree(int val); 
 void setleft(struct node *tree, int val);
 void setright(struct node *tree, int val);
