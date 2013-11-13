@@ -34,6 +34,7 @@ void dup_detect_and_traverse();
 void binary_search_tree();
 struct node *create_tree();
 int lookup(struct node *root, int val);
+struct node *insert(struct node *tree, int val);
 int get_level(struct node *root, struct node *n);
 struct node *create_tree();
 
