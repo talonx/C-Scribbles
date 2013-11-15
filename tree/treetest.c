@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "CUnit/Basic.h"
-#include "tree.h"
+#include "treeprobs.h"
 
 int init_suite1(void)
 {
@@ -26,6 +26,16 @@ void printarray(int *arr) {
     for (i = 0;i < 11; i++) {
         printf("%d\n", arr[i]);
     }
+}
+
+void testHasPathSum() {
+    struct node *t = create_tree();
+    CU_ASSERT(hasPathSum(t, 80) == 1);
+    CU_ASSERT(hasPathSum(t, 21) == 1);
+    CU_ASSERT(hasPathSum(t, 22) == 0);
+    CU_ASSERT(hasPathSum(t, 0) == 0);
+    CU_ASSERT(hasPathSum(t, 100) == 0);
+    CU_ASSERT(hasPathSum(NULL, 100) == 0);
 }
 
 void testInsert(void) {
@@ -86,6 +96,7 @@ int main()
     assert(CU_add_test(pSuite, "testDFS", testDFS) != NULL);
     assert(CU_add_test(pSuite, "testInsert", testInsert) != NULL);
     assert(CU_add_test(pSuite, "testInsertDisplace", testInsertDisplace) != NULL);
+    assert(CU_add_test(pSuite, "testHasPathSum", testHasPathSum) != NULL);
     //    if ((NULL == CU_add_test(pSuite, "testLookup", testLookup)))
     //    {
     //        CU_cleanup_registry();
