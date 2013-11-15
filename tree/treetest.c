@@ -32,6 +32,7 @@ void testHasPathSum() {
     struct node *t = create_tree();
     CU_ASSERT(hasPathSum(t, 80) == 1);
     CU_ASSERT(hasPathSum(t, 21) == 1);
+    CU_ASSERT(hasPathSum(t, 39) == 1);
     CU_ASSERT(hasPathSum(t, 22) == 0);
     CU_ASSERT(hasPathSum(t, 0) == 0);
     CU_ASSERT(hasPathSum(t, 100) == 0);

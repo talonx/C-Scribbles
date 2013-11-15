@@ -1,7 +1,7 @@
 #include "treeprobs.h"
 
 int isLeaf(struct node *node) {
-    return node != NULL && node->right == NULL && node->left == NULL;
+    return node->right == NULL && node->left == NULL;
 }
 
 int hasPath(struct node *node, int sum, int running) {
@@ -14,16 +14,17 @@ int hasPath(struct node *node, int sum, int running) {
     }
 
     if(node->left != NULL) {
-
-    }
-
-    if(node->left == NULL && tree->right == NULL) {
-        if(tree->val == sum) {
+        if(hasPath(node->left, sum, node->left->val + running) == 1) {
             return 1;
-        } else {
-            return 0;
         }
     }
+
+    if(node->right != NULL) {
+        if(hasPath(node->right, sum, node->right->val + running) == 1) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 int hasPathSum(struct node *tree, int sum) {
